@@ -34,11 +34,11 @@ export default class NumberPad extends Vue {
   isOperatorAdded = false;
   isStarted = false;
   //判断是否为运算符
-  isOperator(character) {
+  isOperator(character: string) {
     return ["+", "-", "×", "÷"].indexOf(character) > -1;
   }
   //添加操作符
-  append(character) {
+  append(character: string) {
     if (this.equation === "0" && !this.isOperator(character)) {
       if (character === ".") {
         this.equation += "" + character;
