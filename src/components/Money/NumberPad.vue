@@ -1,32 +1,100 @@
 <template>
   <div class="numberPad">
-    <div class="output">100</div>
+    <div class="output">{{equation}}</div>
     <div class="buttons">
-      <button style="grid-area: num-1">1</button>
-      <button style="grid-area: num-2">2</button>
-      <button style="grid-area: num-3">3</button>
-      <button style="grid-area: num-4">4</button>
-      <button style="grid-area: num-5">5</button>
-      <button style="grid-area: num-6">6</button>
-      <button style="grid-area: num-7">7</button>
-      <button style="grid-area: num-8">8</button>
-      <button style="grid-area: num-9">9</button>
-      <button style="grid-area: num-0">0</button>
-      <button style="grid-area: add">+</button>
-      <button style="grid-area: subtract">-</button>
-      <button style="grid-area: multipy">×</button>
-      <button style="grid-area: divide">÷</button>
-      <button style="grid-area: dot">.</button>
-      <button style="grid-area: percent">%</button>
-      <button style="grid-area: delete">删除</button>
-      <button style="grid-area: clear">清空</button>
-      <button style="grid-area: ok">OK</button>
+      <button style="grid-area: num-1" @click="append(1)">1</button>
+      <button style="grid-area: num-2" @click="append(2)">2</button>
+      <button style="grid-area: num-3" @click="append(3)">3</button>
+      <button style="grid-area: num-4" @click="append(4)">4</button>
+      <button style="grid-area: num-5" @click="append(5)">5</button>
+      <button style="grid-area: num-6" @click="append(6)">6</button>
+      <button style="grid-area: num-7" @click="append(7)">7</button>
+      <button style="grid-area: num-8" @click="append(8)">8</button>
+      <button style="grid-area: num-9" @click="append(9)">9</button>
+      <button style="grid-area: num-0" @click="append(0)">0</button>
+      <button style="grid-area: add" @click="append('+')">+</button>
+      <button style="grid-area: subtract" @click="append('-')">-</button>
+      <button style="grid-area: multipy" @click="append('×')">×</button>
+      <button style="grid-area: divide" @click="append('÷')">÷</button>
+      <button style="grid-area: dot" @click="append('.')">.</button>
+      <button style="grid-area: percent" @click="calculatePercentage">%</button>
+      <button style="grid-area: delete" @click="deleteOne">删除</button>
+      <button style="grid-area: clear" @click="clear">清空</button>
+      <button style="grid-area: ok" @click="calculate">OK</button>
     </div>
   </div>
 </template>
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
 
-<script>
-export default {};
+@Component
+export default class NumberPad extends Vue {
+  equation = "0";
+  isDecimalAdded = false;
+  isOperatorAdded = false;
+  isStarted = false;
+  //判断是否为运算符
+  isOperator(character) {
+    return ["+", "-", "×", "÷"].indexOf(character) > -1;
+  }
+  //添加操作符
+  append(character) {
+    if (this.equation === "0" && !this.isOperator(character)) {
+      if (character === ".") {
+        this.equation += "" + character;
+        this.isDecimalAdded = true;
+      } else {
+        this.equation = "" + character;
+      }
+      this.isStarted = true;
+      return;
+    }
+
+    //number
+    if (!this.isOperator(character)) {
+      if (character === "." && this.isDecimalAdded) {
+        return;
+      }
+      if (character === ".") {
+        this.isDecimalAdded = true;
+        this.isOperatorAdded = true;
+      } else {
+        this.isOperatorAdded = false;
+      }
+      this.equation += "" + character;
+    }
+    //operator
+    if (this.isOperator(character) && !this.isOperatorAdded) {
+      this.equation += "" + character;
+      this.isDecimalAdded = false;
+      this.isOperatorAdded = true;
+    }
+  }
+  calculate() {
+    const result = this.equation
+      .replace(new RegExp("×", "g"), "*")
+      .replace(new RegExp("÷", "g"), "/");
+    this.equation = parseFloat(eval(result).toFixed(9)).toString();
+    this.isDecimalAdded = false;
+    this.isOperatorAdded = false;
+  }
+  calculatePercentage() {
+    if (this.isOperatorAdded || !this.isStarted) {
+      return;
+    }
+    this.equation = this.equation + "* 0.01";
+    this.calculate();
+  }
+  clear() {
+    this.equation = "0";
+    this.isDecimalAdded = false;
+    this.isOperatorAdded = false;
+    this.isStarted = false;
+  }
+  deleteOne() {
+    this.equation = this.equation.slice(0, -1);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -36,6 +104,7 @@ export default {};
     font-family: Consolas, monospace;
     padding: 9px 16px;
     text-align: right;
+    min-height: 72px;
   }
   .buttons {
     display: grid;
