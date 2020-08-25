@@ -7,13 +7,11 @@
 <style lang="scss">
 @import "~@/assets/style/reset.scss";
 @import "~@/assets/style/helper.scss";
-
 body {
   line-height: 1.5;
   font-family: $font-heiti;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>
