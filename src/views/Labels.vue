@@ -23,12 +23,7 @@ export default class extends Vue {
   createTag() {
     const name = window.prompt("请输入标签名");
     if (name) {
-      const success = tagListModel.create(name);
-      if (success === "duplicated") {
-        window.alert("标签名重复");
-      } else if (success === "success") {
-        window.alert("添加成功");
-      }
+      window.createTage(name);
     }
   }
 }
