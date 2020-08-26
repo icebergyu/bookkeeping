@@ -1,11 +1,10 @@
 <template>
   <div>
     <Layout class-prefix="layout">
-      {{recordList}}
       <NumberPad @update:value="onUpdateTotal" @submit="saveRecord" />
       <Types :value.sync="record.type" />
       <FormItem @update:value="onUpdateNotes" fieldName="备注" placeholder="输入备注" />
-      <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
+      <Tags @update:value="onUpdateTags" />
     </Layout>
   </div>
 </template>
@@ -21,7 +20,6 @@ import store from "../store/index2";
 
 @Component({ components: { NumberPad, FormItem, Types, Tags } })
 export default class Money extends Vue {
-  tags = store.tagList.map((item) => item.name);
   recordList = store.recordList;
   record: RecordItem = { tags: [], notes: "", type: "-", total: 0 };
   onUpdateTags(value: string[]) {
