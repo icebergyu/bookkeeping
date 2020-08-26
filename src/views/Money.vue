@@ -21,10 +21,9 @@ import recordListModel from "../models/recordListModel";
 import tagListModel from "../models/tagListModel";
 
 const recordList = recordListModel.fetch();
-const tagList = tagListModel.fetch();
 @Component({ components: { NumberPad, FormItem, Types, Tags } })
 export default class Money extends Vue {
-  tags = tagList.map((item) => item.name);
+  tags = window.tagList.map((item) => item.name);
   recordList: RecordItem[] = recordList;
   record: RecordItem = { tags: [], notes: "", type: "-", total: 0 };
   onUpdateTags(value: string[]) {
