@@ -1,7 +1,7 @@
 <template>
   <div>
     <Layout class-prefix="layout">
-      {{record}}
+      {{recordList}}
       <NumberPad @update:value="onUpdateTotal" @submit="saveRecord" />
       <Types :value.sync="record.type" />
       <Notes @update:value="onUpdateNotes" />
@@ -23,11 +23,14 @@ type Record = {
   notes: string;
   type: string;
   total: number;
+  createdAt?: Date;
 };
 @Component({ components: { NumberPad, Notes, Types, Tags } })
 export default class Money extends Vue {
   tags = ["衣", "食", "住", "行"];
-  recordList: Record[] = [];
+  recordList: Record[] = JSON.parse(
+    window.localStorage.getItem("recordList") || "[]"
+  );
   record: Record = { tags: [], notes: "", type: "-", total: 0 };
   onUpdateTags(value: string[]) {
     this.record.tags = value;
@@ -39,7 +42,8 @@ export default class Money extends Vue {
     this.record.total = parseFloat(value);
   }
   saveRecord() {
-    const record2 = JSON.parse(JSON.stringify(this.record));
+    const record2: Record = JSON.parse(JSON.stringify(this.record));
+    record2.createdAt = new Date();
     this.recordList.push(record2);
     console.log(this.recordList);
   }
