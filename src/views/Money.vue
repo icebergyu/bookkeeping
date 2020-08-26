@@ -17,13 +17,11 @@ import NumberPad from "../components/Money/NumberPad.vue";
 import FormItem from "../components/Money/FormItem.vue";
 import Types from "../components/Money/Types.vue";
 import Tags from "../components/Money/Tags.vue";
-import recordListModel from "../models/recordListModel";
 
-const recordList = recordListModel.fetch();
 @Component({ components: { NumberPad, FormItem, Types, Tags } })
 export default class Money extends Vue {
   tags = window.tagList.map((item) => item.name);
-  recordList: RecordItem[] = recordList;
+  recordList = window.recordList;
   record: RecordItem = { tags: [], notes: "", type: "-", total: 0 };
   onUpdateTags(value: string[]) {
     this.record.tags = value;
@@ -35,11 +33,7 @@ export default class Money extends Vue {
     this.record.total = parseFloat(value);
   }
   saveRecord() {
-    recordListModel.create(this.record);
-  }
-  @Watch("recordList")
-  onRecordChange() {
-    recordListModel.save();
+    window.createRecord(this.record);
   }
 }
 </script>
