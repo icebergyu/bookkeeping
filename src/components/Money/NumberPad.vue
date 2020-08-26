@@ -77,6 +77,8 @@ export default class NumberPad extends Vue {
     this.equation = parseFloat(eval(result).toFixed(9)).toString();
     this.isDecimalAdded = false;
     this.isOperatorAdded = false;
+    this.$emit("update:value", this.equation);
+    this.$emit("submit", this.equation);
   }
   calculatePercentage() {
     if (this.isOperatorAdded || !this.isStarted) {
