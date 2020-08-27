@@ -25,7 +25,7 @@ window.onload = function () {
 if (document.documentElement.clientWidth > 500) {
   window.alert("请使用手机打开页面")
   const img = document.createElement('img')
-  img.src = '/bookkeeping-website/qrcode.png'
+  img.src = '/bookkeeping-website/qrcode_gitee.png'
   img.style.position = 'fixed'
   img.style.left = '50%'
   img.style.top = '50%'
