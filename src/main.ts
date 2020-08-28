@@ -22,14 +22,3 @@ window.onload = function () {
     window.scrollTo(0, 200)
   }, 0)
 }
-if (document.documentElement.clientWidth > 500) {
-  window.alert("请使用手机打开页面")
-  const img = document.createElement('img')
-  img.src = '/bookkeeping-website/qrcode_gitee.png'
-  img.style.position = 'fixed'
-  img.style.left = '50%'
-  img.style.top = '50%'
-  img.style.transform = 'translate(-50%,-50%)'
-  img.style.boxShadow = '0 0 10px rgba(0 ,0, 0, 0.25)'
-  document.body.appendChild(img)
-}
